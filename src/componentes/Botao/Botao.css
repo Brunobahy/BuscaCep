@@ -1,0 +1,18 @@
+button{
+    margin: 0 16px;
+    padding: 16px;
+    font-size: 24px;
+    border: none;
+    border-radius: 10px;
+    color: #FFFFFF;
+    background-color: #2596be;
+    cursor: pointer;
+    box-shadow: 6px 6px 2px 2px #026369, inset 0px 0px 0px 0px #026369;
+    transition: all 200ms ;
+}
+
+button:active{
+    background-color: #03749c;
+    box-shadow:  0px 0px 0px 0px #026369 ,inset 3px 3px 5px 2px #026369;
+    transform: translate(3px, 3px);
+}
