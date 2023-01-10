@@ -4,7 +4,8 @@ import { useState } from 'react';
 import Botao from '../Botao';
 import CampoMapa from '../CampoMapa';
 import Historico from '../Historico';
-import './CampoTexto.css'
+import { v4 as uuidv4 } from 'uuid';
+import './CampoTexto.css';
 
 
 
@@ -35,7 +36,8 @@ const CampoTexto = (props) => {
             bairro: buscaConvertida.bairro,
             cidade: buscaConvertida.localidade,
             logradouro: buscaConvertida.logradouro,
-            cepAntigo: buscaConvertida.cep
+            cepAntigo: buscaConvertida.cep,
+            id: uuidv4()
         })
         setCep('')
 
@@ -46,8 +48,8 @@ const CampoTexto = (props) => {
 
     }
 
-    function excluir(cepAntigo) {
-        setListaPesquisa(listaPesquisa.filter(item => item.cepAntigo != cepAntigo))
+    function excluir(id) {
+        setListaPesquisa(listaPesquisa.filter(item => item.id != id))
     }
 
     return (
@@ -61,7 +63,8 @@ const CampoTexto = (props) => {
                     value={cep}
                     id={props.nome}
                     type={props.tipo}
-                    placeholder={props.placeholder} />
+                    placeholder={props.placeholder} 
+                    />
 
                 <Botao texto={"Buscar"} />
             </form>

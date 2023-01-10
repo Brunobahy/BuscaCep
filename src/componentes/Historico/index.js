@@ -9,7 +9,7 @@ function Historico({ lista, click}) {
             <ul>
                 {lista.map(item =>
                     <li>
-                        <AiFillCloseCircle className='icon' onClick={ () => click(item.cepAntigo)} />
+                        <AiFillCloseCircle className='icon' onClick={ () => click(item.id)} />
                         <Link
                             link={"https://www.google.com.br/maps/place/" + item.cidade + " " + item.bairro + " " + item.logradouro}
                             texto={item.cepAntigo}
