@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <Titulo nome={"Encontre seu endereço"} cor={"#FFF"} tamanho={"64px"} />
-      <CampoTexto nome={"CEP"} placeholder={"Insira seu CEP"} />
+      <CampoTexto nome={"CEP"} placeholder={"Insira seu CEP"} tipo={"number"}/>
       <Contato/>
     </>
   );
