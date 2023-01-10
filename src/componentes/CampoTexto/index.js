@@ -1,6 +1,9 @@
+import { waitFor } from '@testing-library/react';
+import { wait } from '@testing-library/user-event/dist/utils';
 import { useState } from 'react';
 import Botao from '../Botao';
 import CampoMapa from '../CampoMapa';
+import Historico from '../Historico';
 import './CampoTexto.css'
 
 
@@ -8,11 +11,15 @@ import './CampoTexto.css'
 const CampoTexto = (props) => {
 
     const [cep, setCep] = useState('')
-    const [bairro, setBairro] = useState('')
-    const [cidade, setCidade] = useState('')
-    const [logradouro, setLogradouro] = useState('')
-    const [cepAntigo, setCepAntigo] = useState('')
 
+    const [pesquisa, setPesquisa] = useState({
+        bairro: '',
+        cidade: '',
+        logradouro: '',
+        cepAntigo: ''
+    })
+
+    const [listaPesquisa, setListaPesquisa] = useState('')
 
     const digitado = (evento) => {
         setCep(evento.target.value)
@@ -23,46 +30,54 @@ const CampoTexto = (props) => {
 
         let busca = await fetch(`http://viacep.com.br/ws/${cep}/json/`)
         let buscaConvertida = await busca.json();
-        console.log(buscaConvertida)
 
-        setBairro(buscaConvertida.bairro);
+        setPesquisa({
+            bairro: buscaConvertida.bairro,
+            cidade: buscaConvertida.localidade,
+            logradouro: buscaConvertida.logradouro,
+            cepAntigo: buscaConvertida.cep
+        })
+        setCep('')
 
-        setCidade(buscaConvertida.localidade);
+        if(pesquisa.bairro != '' && pesquisa.bairro != undefined){
+            setListaPesquisa([...listaPesquisa, pesquisa])
+            console.log(listaPesquisa)
+        }
 
-        setLogradouro(buscaConvertida.logradouro); 
-
-        setCepAntigo(buscaConvertida.cep);
-
-        setCep("")
     }
-    
 
+    function excluir(cepAntigo) {
+        setListaPesquisa(listaPesquisa.filter(item => item.cepAntigo != cepAntigo))
+    }
 
     return (
         <div >
             <form className='input-comum' onSubmit={buscaCep}>
 
                 <label htmlFor={props.nome}>{props.nome}</label>
-                
-                <input 
-                onChange={digitado} 
-                value={cep} 
-                id={props.nome} 
-                type={props.tipo} 
-                placeholder={props.placeholder} />
+
+                <input
+                    onChange={digitado}
+                    value={cep}
+                    id={props.nome}
+                    type={props.tipo}
+                    placeholder={props.placeholder} />
 
                 <Botao texto={"Buscar"} />
             </form>
 
-            { cidade != '' && (
-            
-            <CampoMapa 
-            cidade={cidade} 
-            bairro={bairro} 
-            logradouro={logradouro} 
-            cep={cepAntigo} />
-            
+            {pesquisa.cidade !== '' && (
+
+                <CampoMapa
+                    cidade={pesquisa.cidade}
+                    bairro={pesquisa.bairro}
+                    logradouro={pesquisa.logradouro}
+                    cep={pesquisa.cepAntigo} />
+
             )}
+
+            {listaPesquisa.length > 0 && (<Historico lista={listaPesquisa} click={excluir} />)}
+
 
         </div>
     )
